@@ -1,0 +1,51 @@
+nav {
+  margin-bottom: 50px;
+}
+/* Home */
+.title-home {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.title-home * {
+  margin: 0;
+  padding: 0;
+}
+/* Standings */
+.standingsTeamName {
+  display: flex;
+  align-items: center;
+}
+.standingsTeamName > * {
+  margin-right: 10px;
+}
+.standingsTeamName a {
+  font-weight: bolder;
+}
+.standingsTeamName a:hover {
+  text-decoration: underline;
+}
+.standingsTeamLogo {
+  display: flex;
+  align-items: center;
+  max-width: 20px;
+  padding: 0;
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.standingsTeamLogo img {
+  width: 100%;
+}
+
+/* Team Profile */
+.teamProfile .teamProfileImg {
+  max-width: 100px;
+  margin: 50px auto;
+}
+.teamProfile .teamProfileImg > img {
+  width: 100%;
+}
+.teamProfile .collection-item .title {
+  font-weight: bolder;
+}

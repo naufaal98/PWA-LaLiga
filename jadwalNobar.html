@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Football Info</title>
+    <meta name="description" content="My first PWA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="stylesheet" href="css/custom.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#00897B" />
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+       <!-- Navigasi -->
+    <nav class="red lighten-2" role="navigation">
+      <div class="nav-wrapper container">
+        <a href="#" class="brand-logo" id="logo-container">Football Info</a>
+        <a href="./index.html" class="sidenav-trigger" data-target="nav-mobile">
+          <i class="material-icons">arrow_back</i>
+        </a>
+        <ul class="topnav right hide-on-med-and-down"></ul>
+        <ul class="sidenav" id="nav-mobile"></ul>
+      </div>
+    </nav>
+    <!-- Akhir Navigasi -->
+    <div class="container">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="idNobar" type="text" class="validate" required>
+              <label for="idNobar">ID Nobar</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s5">
+              <input id="timHome" type="text" class="validate" required>
+              <label for="timHome">Tim Home</label>
+            </div>
+            <div class="col s2" style="text-align: center">
+              <p>VS</p>
+            </div>
+            <div class="input-field col s5">
+              <input id="timAway" type="text" class="validate" required>
+              <label for="timAway">Tim Away</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="tempatNobar" type="text" class="validate" required>
+              <label for="tempatNobar">Tempat Nobar</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="tanggalNobar" type="date" class="validate" required>
+              <label for="tanggalNobar">Tanggal Nobar</label>
+            </div>
+          </div>
+          <button 
+            class="btn waves-effect waves-light" 
+            onclick="insertJadwalNobar()"
+          >
+            Submit
+          </button>
+        </form>
+        <div class="col s12 m12" style="margin-top: 30px">
+          <table class="striped">
+            <thead>
+              <tr>
+                  <th>ID Nobar</th>
+                  <th>Tim Home</th>
+                  <th>Tim Away</th>
+                  <th>Tempat Nobar</th>
+                  <th>Tanggal Nobar</th>
+                  <th>Action</th>
+              </tr>
+            </thead>
+      
+            <tbody id="jadwalRow"></tbody>
+          </table>
+        </div>
+    </div>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/idb.js"></script>
+    <script src="js/db-controller.js"></script>
+    <script>
+      const jadwalRow = document.querySelector("#jadwalRow");
+      const idNobar = document.querySelector('#idNobar')
+      const timHome = document.querySelector('#timHome')
+      const timAway = document.querySelector('#timAway')
+      const tempatNobar = document.querySelector('#tempatNobar')
+      const tanggalNobar = document.querySelector('#tanggalNobar')
+
+      function insertJadwalNobar () {
+        const jadwalNobar = {
+          idNobar: idNobar.value,
+          timHome: timHome.value,
+          timAway: timAway.value,
+          tempatNobar: tempatNobar.value,
+          tanggalNobar: tanggalNobar.value
+        }
+        
+        dbInsertJadwalNobar(jadwalNobar).then(() => {
+          showAllJadwalNobar()
+        })
+      }
+
+      function showAllJadwalNobar () {
+        dbGetAllJadwalNobar().then(nobars => {
+          let listJadwalNobar = ""
+          nobars.map(nobar => {
+            listJadwalNobar += `
+              <tr>
+                <td>${nobar.idNobar}</td>
+                <td>${nobar.timHome}</td>
+                <td>${nobar.timAway}</td>
+                <td>${nobar.tempatNobar}</td>
+                <td>${nobar.tanggalNobar}</td>
+                <td>
+                  <button id="${nobar.idNobar}" class="removeButton">Remove</button>
+                </td>
+              </tr>
+            `
+          })
+          jadwalRow.innerHTML = listJadwalNobar
+
+          let removeButtons = document.querySelectorAll(".removeButton");
+          for(let button of removeButtons) {
+              button.addEventListener("click", function (event) {
+                  let nobarId = event.target.id;
+                  dbDeleteJadwalNobar(nobarId).then(() => {
+                    showAllJadwalNobar()
+                  })
+              })
+          }
+        })
+      }
+
+      showAllJadwalNobar()
+    </script>
+  </body>
+</html>
