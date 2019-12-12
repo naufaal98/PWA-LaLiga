@@ -209,6 +209,7 @@ function getFavoriteTeam() {
           </div>
           `;
     });
+    if (favoriteTeam.length < 1) favoriteTeam = 'No team added to favorite' 
     document.getElementById("favorite-team").innerHTML = favoriteTeam;
   });
 }
