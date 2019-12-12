@@ -209,16 +209,6 @@ function getFavoriteTeam() {
           </div>
           `;
     });
-
-    let favoriteTeamContainer = `
-      <div class="row title-home">
-        <h2 class="title">Favorite Team</h2>
-      </div>
-      <div class="row">
-        ${favoriteTeam}
-      </div>
-    `
-    // document.getElementById("body-content").innerHTML = favoriteTeamContainer;
     document.getElementById("favorite-team").innerHTML = favoriteTeam;
   });
 }
