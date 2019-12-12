@@ -1,14 +1,14 @@
 const idbPromised = idb.open('football_database', 1, upgradedDb => {
-  if (!upgradedDb.objectStoreNames.contains('jadwalNobar')) {
-    upgradedDb.createObjectStore("jadwalNobar", {keyPath: "idNobar"});
+  if (!upgradedDb.objectStoreNames.contains('teamFavorite')) {
+    upgradedDb.createObjectStore("teamFavorite", {keyPath: "id"});
   }
 });
 
-const dbGetAllJadwalNobar = () => {
+const dbGetAllFavoriteTeam = () => {
   return new Promise((resolve, reject) => {
     idbPromised.then(db => {
-      const transaction = db.transaction("jadwalNobar", `readonly`);
-      return transaction.objectStore("jadwalNobar").getAll();
+      const transaction = db.transaction("teamFavorite", `readonly`);
+      return transaction.objectStore("teamFavorite").getAll();
     }).then(data => {
       if (data !== undefined) {
         resolve(data)
@@ -19,11 +19,11 @@ const dbGetAllJadwalNobar = () => {
   })
 };
 
-const dbInsertJadwalNobar = jadwalNobar => {
+const dbInsertFavoriteTeam = dataTeam => {
   return new Promise((resolve, reject) => {
     idbPromised.then(db => {
-      const transaction = db.transaction("jadwalNobar", `readwrite`);
-      transaction.objectStore("jadwalNobar").add(jadwalNobar);
+      const transaction = db.transaction("teamFavorite", `readwrite`);
+      transaction.objectStore("teamFavorite").put(dataTeam);
       return transaction;
     }).then(transaction => {
       if (transaction.complete) {
@@ -35,11 +35,11 @@ const dbInsertJadwalNobar = jadwalNobar => {
   })
 };
 
-const dbDeleteJadwalNobar = nobarId => {
+const dbDeleteFavoriteTeam = id => {
   return new Promise((resolve, reject) => {
     idbPromised.then(db => {
-      const transaction = db.transaction("jadwalNobar", `readwrite`);
-      transaction.objectStore("jadwalNobar").delete(nobarId);
+      const transaction = db.transaction("teamFavorite", `readwrite`);
+      transaction.objectStore("teamFavorite").delete(id);
       return transaction;
     }).then(transaction => {
       if (transaction.complete) {

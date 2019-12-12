@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (this.status == 200) {
           content.innerHTML = xhttp.responseText;
           if(page == 'home') getStandings("2014")
+          else if (page == 'favorite') getFavoriteTeam()
         } else if (this.status == 404) {
           content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
         } else {

@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
-       <!-- Navigasi -->
+    <!-- Navigasi -->
     <nav class="red lighten-2" role="navigation">
       <div class="nav-wrapper container">
         <a href="#" class="brand-logo" id="logo-container">Football Info</a>
@@ -25,15 +25,73 @@
       </div>
     </nav>
     <!-- Akhir Navigasi -->
-    <div class="container" id="body-content">
-      
+    <div class="container">
+      <div class="card center" style="padding: 20px">
+        <a 
+          href="#" 
+          id="addFavorite" 
+          style="display: none" 
+          class="waves-effect waves-light btn light-blue lighten-1"
+        >
+          Add to Favorite
+        </a>
+        <a 
+          href="#" 
+          id="removeFavorite" 
+          style="display: none" 
+          class="waves-effect waves-light btn red darken-4"
+        >
+          Remove from Favorite
+        </a>
+      </div>
     </div>
+    <div class="container" id="body-content"></div>
     <script src="js/materialize.min.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/idb.js"></script>
+    <script src="js/db.js"></script>
     <script src="js/script.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        getTeamById();
+      document.addEventListener("DOMContentLoaded", async function() {
+        let teamDetail = getTeamById();
+
+        const addFavorite = document.getElementById('addFavorite')
+        const removeFavorite = document.getElementById('removeFavorite')
+
+        // Check is the team is in Favorite?
+        const urlParams = new URLSearchParams(window.location.search);
+        const idParam = urlParams.get("id");
+        const allTeam = await dbGetAllFavoriteTeam()   
+        const isTeamAdded = allTeam.find(team => team.id === parseInt(idParam))
+
+        if (isTeamAdded) removeFavorite.style.display = 'inline-block'
+        else addFavorite.style.display = 'inline-block'
+
+        // Add Team to Favorite
+        addFavorite.onclick = function () {
+          teamDetail.then((team) => {
+            dbInsertFavoriteTeam(team)
+              .then(() => {
+                alert("Berhasil menyimpan tim favorit")
+                addFavorite.style.display = 'none'
+                removeFavorite.style.display = 'inline-block'
+              })
+              .catch(() => alert("Gagal menyimpan tim favorit"))
+          })
+        }
+
+        // Remove Team from Favorite
+        removeFavorite.onclick = function () {
+          teamDetail.then((team) => {
+            dbDeleteFavoriteTeam(team.id)
+              .then(() => {
+                alert("Berhasil menghapus tim favorit")
+                addFavorite.style.display = 'inline-block'
+                removeFavorite.style.display = 'none'
+              })
+              .catch(() => alert("Gagal menghapus tim favorit"))
+          })
+        }
       });
     </script>
   </body>
